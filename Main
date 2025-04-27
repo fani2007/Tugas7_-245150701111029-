@@ -1,0 +1,47 @@
+import java.util.Random;
+
+public class Main {
+    public static void main(String[] args) {
+        Kue[] daftarKue = new Kue[20];
+        Random random = new Random();
+
+        for (int i = 0; i < daftarKue.length; i++) {
+            if (i % 2 == 0) {
+                daftarKue[i] = new KuePesanan("Kue Pesanan " + (i+1), random.nextInt(10000) + 10000, random.nextDouble() * 5 + 1);
+            } else {
+                daftarKue[i] = new KueJadi("Kue Jadi " + (i+1), random.nextInt(5000) + 5000, random.nextInt(10) + 1);
+            }
+        }
+
+        double totalHargaSemua = 0;
+        double totalHargaPesanan = 0, totalBeratPesanan = 0;
+        double totalHargaJadi = 0, totalJumlahJadi = 0;
+        Kue kueTermahal = daftarKue[0];
+
+        System.out.println("=== Daftar Semua Kue ===");
+        for (Kue kue : daftarKue) {
+            System.out.println(kue);
+            double hargaKue = kue.hitungHarga();
+            totalHargaSemua += hargaKue;
+
+            if (kue instanceof KuePesanan) {
+                totalHargaPesanan += hargaKue;
+                totalBeratPesanan += ((KuePesanan) kue).getBerat();
+            } else if (kue instanceof KueJadi) {
+                totalHargaJadi += hargaKue;
+                totalJumlahJadi += ((KueJadi) kue).getJumlah();
+            }
+
+            if (hargaKue > kueTermahal.hitungHarga()) {
+                kueTermahal = kue;
+            }
+        }
+
+        System.out.println("\n=== Ringkasan ===");
+        System.out.printf("Total Harga Semua Kue: Rp%.2f\n", totalHargaSemua);
+        System.out.printf("Total Harga Kue Pesanan: Rp%.2f, Total Berat: %.2f kg\n", totalHargaPesanan, totalBeratPesanan);
+        System.out.printf("Total Harga Kue Jadi: Rp%.2f, Total Jumlah: %.2f\n", totalHargaJadi, totalJumlahJadi);
+        System.out.println("\nKue dengan harga terbesar:");
+        System.out.println(kueTermahal);
+    }
+}
